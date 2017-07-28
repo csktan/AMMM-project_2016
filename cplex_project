@@ -1,0 +1,133 @@
+/****************
+ * OPL 12.6.0.0 Model
+ * Author: csktan
+ * Creation Date: Apr 6, 2016 at 7:25:37 PM
+ ***************/
+ //input datas
+ int xtruck=...; 		//dimession of the truck
+ int ytruck=...;
+ int wtruck=...;			//capacity of the truck
+ 
+ int nt=...;		// number of the trucks
+ int np=...;		// number of the packets
+ 
+ range X=1..xtruck;
+ range Y=1..ytruck;
+ range T=1..nt;
+ range P=1..np;
+ 
+ 
+ int xDim[p in P]=...;		//dimension of the packets
+ int yDim[p in P]=...;
+ int wp[p in P]=...;			//weight of the packet
+ 
+ int SDM[p1 in P][P2 in P]=...; //symetric matrix
+ 
+//decision variables:::
+
+dvar boolean Pt[p in P][t in T];
+dvar boolean Pxy[p in P][x in X][y in Y];
+dvar boolean Pbl[p in P][x in X][y in Y];
+dvar boolean used[t in T];
+dvar int z;
+ 
+//pre-processing block
+ execute{ 
+// p=0;
+// t=0;
+// var ntrucks=0;
+// var npackets = 0;
+// for (var t=1; t<=nt; t++)
+// 	ntrucks += nt[t];
+// 	for (var p=1; p<= np; p++)
+// 	 npackets += np[p];
+// 	 
+ }
+ 	 	
+//objective function
+minimize z+ sum(t in T) used[t] * wtruck;
+	
+
+ subject to {
+   
+ // 1.every packets must be loaded in the trucks..
+ // no packets could be left.
+// 
+// forall (t in T)
+//   forall (p in P)
+//  	  Pt[p][t] == 1;
+
+//no packets can be put in the unused truck
+forall(t in T, p in P)
+  Pt[p][t]<= used[t];
+  
+// packets can't be rotated they are rigid bodies::!!
+//forall (t in T)
+//  sum(p in P)xDim[p]<=xtruck;
+//  sum(p in P)yDim[p]<= ytruck;
+//  
+ // one packet can only be assigned to only one truck.
+// int T[p in p][ t in t]
+ 	forall (p in P )
+ 	 	sum(t in T) Pt[p][t] == 1;
+ 	
+ 
+//2.total weight of the packets in a truck can't exceed the capacity of the truck.
+//or it must be equal or less the total capacity of the truck.
+forall (t in T)
+	sum(p in P) wp[p] * Pt[p][t] <= wtruck;
+
+
+//the position in the truck where the packets can't fit
+// the value of the pbl must be equal to 1. 
+forall (p in P)
+	sum (x in X:x > xtruck-xDim[p]+1)
+	sum(y in Y:y > ytruck-yDim[p]+1)
+	   Pbl[p][x][y]==0;
+//forall (p in P) 
+//	sum(x in X:x <= xtruck-xDim[p])
+//	sum(y in Y:y <= ytruck-yDim[p])
+//	   Pbl[p][x][y]==1;
+
+//two packets in the same truck can't have pxy=1'
+forall (t in T )
+  forall(x in X , y in Y)
+	forall(p1 in P, p2 in P)
+		Pxy[p1][x][y] + Pxy[p2][x][y] <= 1;
+
+//position of the packets with respect to the pbl
+forall (p in P)
+  	forall(x in X, y in Y)
+  	  sum(x1 in X: x1 >= xtruck-x && x1 <= x )
+  	    sum (y1 in Y: y1 >= ytruck-x && y1 <= y)
+  	      Pbl[p][x1][y1] == Pxy[p][x][y];
+  	  					
+//one packets can't be on over the another one.
+forall (p in P, t in T)
+  forall(x in X, y in Y)
+    forall(p1 in P, p2 in P)
+      if(p1 != p2)
+      Pxy[p1][x][y]+Pbl[p1][x][y]+Pxy[p1][x][y]+Pbl[p1][x][y] <=3;
+
+//maximum loaded truck
+forall(t in T)
+	z >= sum(p in P) Pt[p][t]*wp[p];
+
+	
+//incompatible packets p1 and p2 can't be on the same truck if [p1][p2]=1.
+
+forall(t in T)
+  forall(p1 in P, p2 in P)
+    Pt[p1][t]+Pt[p2][t]+SDM[p1][p2]<=2;
+
+}
+
+// post-processing block
+execute {
+//display packets and trucks
+//for (var p in P)
+//	writeln("packet"+ p);
+//	for(var t in T)
+//		writeln("truck"+t);
+//		
+}

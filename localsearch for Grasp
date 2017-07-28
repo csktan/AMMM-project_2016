@@ -1,0 +1,17 @@
+procedure LOCALSEARCH(GRASPSOLUTION W)
+boolean localOptimalSolution <- false;
+loop;
+	GraspSolution w1 <- findBetterSolution(w);
+	if(w.getCost()==w1.getCost()then)
+		localOptimalSolution <- True;
+	else
+		localOptimalsolution <- False;
+w==w1;
+if(LocalOptimalSolution)then
+	goto loop;
+return w;
+
+
+In this algorithm, given a solution W, the method findBetterSolution tries to find a better solution than the
+current one. If the new solution’s cost is the same as the cost of the previous solution, it decided that it has
+reached a local optimum and stops searching. If not, it keeps looking for a better solution.

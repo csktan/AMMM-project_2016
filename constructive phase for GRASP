@@ -1,0 +1,28 @@
+procedure CONSTRUCTIVEPHASe (ProblemData data, double alpha)
+
+ArrayList <candidate> candidates <- initialiseCandidates();
+ArrayList <Candidate> RCL;
+GraspSolution w <- newGraspSolution(this);
+int qMin, qMax;
+candidate c;
+
+loop:
+
+candidates <- evaluateArray(candidates,w)
+candidates <- removeNotFeasibleCandidates(candidates);
+qMin <- min(candidates);
+qmax <- max(candidates); 
+
+RCL <- chooseBestElements(candidates,qmin,qMax,alpha);
+c <- choose AtRandom(RCL);
+w.addElement(c);
+candidates.remove(c);
+if(!isSolution(w)) then
+goto loop:
+return w;
+
+The algorithm creates an empty list of candidates and then fills it with all the feasible candidates. After that, it creates an empty solution. In the loop, it evaluates each of the candidades and removes those candidates
+that are not feasible, this decreases the time spent iterating the candidates. Next, it fills the Restricted Candidate List (RCL) with only those candidates that are under a threshold (as the objective is to minimise). After that, one element from the RCL is selected at random, added to the solution, and removed from the candidate list. Repeat until a complete solution is made.
+
+
+

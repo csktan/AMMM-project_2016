@@ -1,0 +1,29 @@
+#decoder for BRKGA
+procedure DECODE(CHROSOME CHROSOME)
+BrkgaSolution w <- new BrkgaSolution();
+int NPac <- data.getnPackets();
+int NTru <- data.getntrucks();
+usedt <- new boolean [];
+X_pt <- new int [Npac][NTru];
+b_pt <- new boolean [Npac][Ntru];
+int p<-0;
+int t<-0;
+
+packetLoop
+truckLoop
+
+X_pt[p][t] <- chrosome.get(......);
+b_pt[p][t] <- X_pt[p][t] != 0;
+p<- p+1;
+
+if(p < npackets) then
+ goto packetLoop
+else
+	int p <- 0;
+used_t[t] <- 
+
+
+if (t < )
+	
+
+

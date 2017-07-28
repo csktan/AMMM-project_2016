@@ -1,0 +1,10 @@
+The equation describing the RCL is the following one:
+RCL = {∀tT | c.getCost() ≤ qMin + (qMax − qMin) · α)}
+where:
+• c are the candidates
+• c.getCost() returns the cost of a candidate
+• qMin is the value of the minimum cost among the candidates
+• qMax is the value of the maximum cost among the candidates
+• α is the value that represents the greediness of the algorithm. At iteration 0 it has value 1, for a pure
+random solution. Next iteration, alpha gets 0.7, to allow some greediness. At iteration 25 with no
+change, alpha takes value 0.3, coming close to the total greediness

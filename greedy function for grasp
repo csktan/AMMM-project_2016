@@ -1,0 +1,12 @@
+procedure ChooseBestElements(Arraylist<packets> packets, int, qmin,qmax, double Alphe)
+List RCL<- NEW lIST();
+Double threshold <- qmin + (qmax-qmin)* alpha;
+int cNum<- 0;
+LOOP;
+	if (Trucks.get(i).getload()<= threshold)then
+	RCL.add(c);
+cNum++;
+if(cNUm< packets.size()then)
+goto loop;
+return RCL;
+

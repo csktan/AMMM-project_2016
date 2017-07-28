@@ -1,0 +1,19 @@
+Procedure SolveGRASP()
+GraspSolution w, w1<- new GraspSolution();
+double alpha <- 1;
+loop:
+	W<- CONSTRUCTIVEpHASE(DATA,ALPHA);
+	W<- LocalSearch(w);
+if(w.getCost()> w1.getCost()) then
+w1<-w;
+i<-0;
+else
+i<- i+1;
+if(iteration == 0) then
+alpha <- 0.7;
+if(i==25) then
+alpha<- 0.3;	
+	(i< MAX_NO_CHANGE)
+goto loop
+return w1;
+
